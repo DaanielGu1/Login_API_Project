@@ -1,0 +1,25 @@
+@startuml
+class user {
+id
+username
+created_at
+password
+first_name
+last_name
+birthday
+email
+account_status
+}
+
+class group {
+id
+name
+created_at
+description
+}
+
+
+user "n " -- "n " group
+
+
+@enduml
