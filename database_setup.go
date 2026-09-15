@@ -27,10 +27,10 @@ func main() {
 	table_query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		username CHAR(50) NOT NULL UNIQUE,
+		username CHAR(50) UNIQUE,
 		first_name CHAR(50) NOT NULL,
 		last_name CHAR(50) NOT NULL,
-		birthday DATE,
+		birthday DATE NOT NULL,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 		password VARCHAR(255) NOT NULL,
 		email CHAR(50),
