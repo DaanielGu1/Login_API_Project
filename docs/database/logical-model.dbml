@@ -1,0 +1,27 @@
+Table users {
+  id integer [primary key]
+  username char
+  first_name char
+  last_name char
+  birthday date
+  created_at timestamp
+  password varchar
+  email char
+  account_status bool 
+}
+
+Table group_members {
+  id integer [primary key]
+  user_id integer [not null, Ref: > users.id]
+  group_id integer [not null, Ref: > group.id]
+
+  
+}
+
+Table group {
+  id integer [primary key]
+  group_name char
+  created_at timestamp
+  description varchar
+
+}
