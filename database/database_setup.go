@@ -10,7 +10,7 @@ import (
 
 var db *sql.DB
 
-func CreateDatabase() {
+func CreateDatabase() *sql.DB {
 
 	var err error
 	
@@ -19,7 +19,6 @@ func CreateDatabase() {
 	if err != nil {
 		log.Fatalf("Error trying to access the database: %v", err)
 	}
-	defer db.Close()
 
 	err = db.Ping()
 	if err != nil {
@@ -35,4 +34,39 @@ func CreateDatabase() {
 	if err != nil {
 		log.Fatalf("Error trying to build the database tables: %v", err)
 	}
+	return db
+}
+
+func CreateNewUser(db *sql.DB, first_name, last_name, birthday, password string) (int64, error) {
+	new_user := `INSERT INTO users (first_name, last_name, birthday, password)
+	VALUES (?, ?, ?, ?)`
+
+	result, err := db.Exec(new_user, first_name, last_name, birthday, password)
+	if err != nil {
+		log.Fatalf("Error trying to insert data to a new user: %v", err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Fatalf("Error trying to get user's ID: %v", err)
+	}
+
+	return id, err
+}
+
+func CreateNewGroup(db *sql.DB, group_name string) (int64, error) {
+	new_group := `INSERT INTO groups (group_name)
+	VALUES (?)`
+
+	result, err := db.Exec(new_group, group_name)
+	if err != nil {
+		log.Fatalf("Error trying to insert data to a new user: %v", err)
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		log.Fatalf("Error trying to get user's ID: %v", err)
+	}
+
+	return id, err
 }
