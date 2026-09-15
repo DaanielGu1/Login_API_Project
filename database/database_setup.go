@@ -4,11 +4,40 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
+
+func errorDatabaseAccess() {
+	var force = false
+	var value string
+	fmt.Println("Create a new database file? [Y/n]")
+	fmt.Scan(&value)
+	if (value=="Y") {
+		force = true
+		if force {
+			createFile()
+		}
+	}
+}
+
+
+func createFile() {
+	var err error
+	var filePath string
+	var databaseContentPath string
+	fmt.Println("Type the path to your file: ")
+	databaseContentPath = "../SQL/create_tables.sql"
+	fmt.Scan(&filePath)
+	err = os.WriteFile(filePath, []byte(databaseContentPath), 0644)
+	if err != nil {
+		log.Fatalf("Error trying to find your path %v", err)
+	}
+}
+
 
 func CreateDatabase() {
 
@@ -17,7 +46,8 @@ func CreateDatabase() {
 
 	db, err = sql.Open("sqlite3", "database.db?_foreign_keys=on")
 	if err != nil {
-		log.Fatalf("Error trying to access the database: %v", err)
+		fmt.Printf("Error trying to access the database: %v", err)
+		errorDatabaseAccess()
 	}
 	defer db.Close()
 
@@ -36,3 +66,5 @@ func CreateDatabase() {
 		log.Fatalf("Error trying to build the database tables: %v", err)
 	}
 }
+
+ 
