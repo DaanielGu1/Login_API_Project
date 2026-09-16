@@ -11,31 +11,6 @@ import (
 
 var db *sql.DB
 
-func errorDatabaseAccess() {
-	var value string
-	fmt.Println("Create a new database file? [Y/n]")
-	fmt.Scan(&value)
-	if (value=="Y") {
-		createFileForError()
-	}
-}
-
-func createFileForError() {
-	var filePath string
-	var err error
-
-	fmt.Println("Type the path to where your file is going to be created: ")
-	fmt.Scan(&filePath)
-
-	filePath = filePath + "/database.db"
-
-	err = os.WriteFile(filePath, nil, 0644)  
-	if err != nil {
-		log.Fatalf("Error trying to find path %v", err)
-	}
-}
-
-
 func CreateDatabase() {
 
 	var err error
