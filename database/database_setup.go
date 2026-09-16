@@ -12,29 +12,26 @@ import (
 var db *sql.DB
 
 func errorDatabaseAccess() {
-	var force = false
 	var value string
 	fmt.Println("Create a new database file? [Y/n]")
 	fmt.Scan(&value)
 	if (value=="Y") {
-		force = true
-		if force {
-			createFile()
-		}
+		createFileForError()
 	}
 }
 
-
-func createFile() {
-	var err error
+func createFileForError() {
 	var filePath string
-	var databaseContentPath string
-	fmt.Println("Type the path to your file: ")
-	databaseContentPath = "../SQL/create_tables.sql"
+	var err error
+
+	fmt.Println("Type the path to where your file is going to be created: ")
 	fmt.Scan(&filePath)
-	err = os.WriteFile(filePath, []byte(databaseContentPath), 0644)
+
+	filePath = filePath + "/database.db"
+
+	err = os.WriteFile(filePath, nil, 0644)  
 	if err != nil {
-		log.Fatalf("Error trying to find your path %v", err)
+		log.Fatalf("Error trying to find path %v", err)
 	}
 }
 
@@ -48,6 +45,7 @@ func CreateDatabase() {
 	if err != nil {
 		fmt.Printf("Error trying to access the database: %v", err)
 		errorDatabaseAccess()
+		db, err = sql.Open("sqlite3", "database.db?_foreign_keys=on")
 	}
 	defer db.Close()
 
@@ -66,5 +64,3 @@ func CreateDatabase() {
 		log.Fatalf("Error trying to build the database tables: %v", err)
 	}
 }
-
- 
