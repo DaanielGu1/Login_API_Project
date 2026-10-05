@@ -5,12 +5,12 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_"github.com/mattn/go-sqlite3"
+	_"go.mongodb.org/mongo-driver/v2/x/mongo/driver/description"
+	_"golang.org/x/text/date"
 )
 
-var db *sql.DB
-
-func CreateDatabase() *sql.DB {
+func CreateDatabase(db *sql.DB) {
 
 	var err error
 	
@@ -34,39 +34,32 @@ func CreateDatabase() *sql.DB {
 	if err != nil {
 		log.Fatalf("Error trying to build the database tables: %v", err)
 	}
-	return db
 }
 
-func CreateNewUser(db *sql.DB, first_name, last_name, birthday, password string) (int64, error) {
-	new_user := `INSERT INTO users (first_name, last_name, birthday, password)
-	VALUES (?, ?, ?, ?)`
+/* func CreateNewUser(db *sql.DB, user User) int {
+	query := `INSERT INTO users VALUES($1, $2, $3, $4, $5, %6) RETURNING id`
 
-	result, err := db.Exec(new_user, first_name, last_name, birthday, password)
+	var id int
+	
+	err := db.QueryRow(query, user.Username, user.First_name, user.Last_name, user.Birthday, user.Email, user.Password).Scan(&id)
 	if err != nil {
-		log.Fatalf("Error trying to insert data to a new user: %v", err)
+		log.Fatalf("Error: %v", err)
 	}
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		log.Fatalf("Error trying to get user's ID: %v", err)
-	}
-
-	return id, err
+	return id
 }
 
-func CreateNewGroup(db *sql.DB, group_name string) (int64, error) {
-	new_group := `INSERT INTO groups (group_name)
-	VALUES (?)`
+func CreateNewGroup(db *sql.DB, group Group) int {
+	query := `INSERT INTO groups VALUES($1, $2) RETURNING id`
 
-	result, err := db.Exec(new_group, group_name)
+	var id int
+
+	err := db.QueryRow(query, group.Name, group.Description).Scan(&id)
 	if err != nil {
-		log.Fatalf("Error trying to insert data to a new user: %v", err)
+		log.Fatalf("Error: %v", err)
 	}
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		log.Fatalf("Error trying to get user's ID: %v", err)
-	}
-
-	return id, err
+	return id
 }
+
+*/
